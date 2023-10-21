@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="fwsbot_ros2_control" params="name min_steer max_steer">
+
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <plugin>fwsbot/RRBotSystemPositionOnlyHardware</plugin>
+      </hardware>
+      
+      <!-- Drive Actuators -->
+      <joint name="fl_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="fr_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="rl_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="rr_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <!-- Steering Actuators -->
+      <joint name="fl_steering_joint">
+        <command_interface name="position">
+          <param name="min">${min_steer}</param>
+          <param name="max">${max_steer}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="fr_steering_joint">
+        <command_interface name="position">
+          <param name="min">${min_steer}</param>
+          <param name="max">${max_steer}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="rl_steering_joint">
+        <command_interface name="position">
+          <param name="min">${min_steer}</param>
+          <param name="max">${max_steer}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="rr_steering_joint">
+        <command_interface name="position">
+          <param name="min">${min_steer}</param>
+          <param name="max">${max_steer}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
+
+
+</robot>
+
