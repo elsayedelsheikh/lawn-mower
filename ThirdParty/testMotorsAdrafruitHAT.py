@@ -1,3 +1,4 @@
+import time
 import board
 import busio
 import adafruit_pca9685
@@ -33,3 +34,11 @@ motor_fl_dir.duty_cycle = 0xffff
 
 motor_fr.duty_cycle = 0xffff
 motor_fr_dir.duty_cycle = 0xffff
+
+time.sleep(5)
+
+## Stop
+motor_bl.duty_cycle = 0
+motor_br.duty_cycle = 0
+motor_fl.duty_cycle = 0
+motor_fr.duty_cycle = 0
