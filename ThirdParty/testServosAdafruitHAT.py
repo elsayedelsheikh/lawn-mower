@@ -15,21 +15,21 @@ kit.servo[10].actuation_range = 160
 kit.servo[14].actuation_range = 160
 
 while True:
-	kit.servo[2] = 0
-	kit.servo[6] = 0
-	kit.servo[10] = 0
-	kit.servo[14] = 0
+	kit.servo[2].angle = 0
+	kit.servo[6].angle = 0
+	kit.servo[10].angle = 0
+	kit.servo[14].angle = 0
 	time.sleep(3)
 
-	kit.servo[2] = 90
-	kit.servo[6] = 90
-	kit.servo[10] = 90
-	kit.servo[14] = 90
+	kit.servo[2].angle = 90
+	kit.servo[6].angle = 90
+	kit.servo[10].angle = 90
+	kit.servo[14].angle = 90
 	time.sleep(3)
 
-	kit.servo[2] = 160
-	kit.servo[6] = 160
-	kit.servo[10] = 160
-	kit.servo[14] = 160
+	kit.servo[2].angle = 160
+	kit.servo[6].angle = 160
+	kit.servo[10].angle = 160
+	kit.servo[14].angle = 160
 	time.sleep(3)
 	
