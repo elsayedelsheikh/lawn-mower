@@ -1,0 +1,29 @@
+version: "3"
+services:
+  base:
+    image: rrbotcam-control:base
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ROS_DISTRO: humble
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    command: ros2 launch rrbot_cam rrbot.launch.py
+    # Networking
+    network_mode: "host"
+    ipc: host
+
+  foxglove-websocket:
+    image:  rrbotcam-control:base
+    command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml
+    # Networking
+    network_mode: "host"
+    ipc: host
+
+  foxglove-server:
+    image: ghcr.io/foxglove/studio:latest
+    ports:
+      - "8080:8080"
+    network_mode: "host"
+    ipc: host
