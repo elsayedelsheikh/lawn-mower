@@ -22,18 +22,17 @@ motor_fl_dir = hat.channels[9]
 motor_fr = hat.channels[12]
 motor_fr_dir = hat.channels[13]
 
+## All Motors forward
+motor_bl_dir.duty_cycle = 0xffff
+motor_fl_dir.duty_cycle = 0xffff
+motor_br_dir.duty_cycle = 0
+motor_fr_dir.duty_cycle = 0
+
 ## Set the duty cycle to 0xffff
 motor_bl.duty_cycle = 0xffff
-motor_bl_dir.duty_cycle = 0xffff
-
 motor_br.duty_cycle = 0xffff
-motor_br_dir.duty_cycle = 0xffff
-
 motor_fl.duty_cycle = 0xffff
-motor_fl_dir.duty_cycle = 0xffff
-
 motor_fr.duty_cycle = 0xffff
-motor_fr_dir.duty_cycle = 0xffff
 
 time.sleep(5)
 
