@@ -22,7 +22,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("rrbot_cam"), "rviz", "rrbot.rviz"]
+        [FindPackageShare("fwsbot"), "rviz", "fwsbot.rviz"]
     )
 
     rviz_node = Node(

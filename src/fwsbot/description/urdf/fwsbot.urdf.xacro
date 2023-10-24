@@ -7,7 +7,7 @@
   <xacro:include filename="$(find fwsbot)/ros2_control/fwsbot.ros2_control.xacro" />
 
   <xacro:fwsbot_ros2_control
-    name="FWSBOT" 
+    name="pca9685_control" 
     min_steer=${radians(0)} 
     max_steer=${radians(90)}/>
 

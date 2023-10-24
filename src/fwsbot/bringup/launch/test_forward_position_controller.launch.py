@@ -22,9 +22,9 @@ def generate_launch_description():
 
     position_goals = PathJoinSubstitution(
         [
-            FindPackageShare("rrbot_cam"),
+            FindPackageShare("fwsbot"),
             "config",
-            "rrbot_forward_position_publisher.yaml",
+            "fwsbot_test_forward_position_publisher.yaml",
         ]
     )
 

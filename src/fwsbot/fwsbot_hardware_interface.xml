@@ -1,0 +1,9 @@
+<library path="fwsbot">
+  <class name="fwsbot/Pca9685SystemHardware"
+         type="fwsbot::Pca9685SystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ros2_control for 4WS Robot using Adafruit Motor HAT
+    </description>
+  </class>
+</library>
