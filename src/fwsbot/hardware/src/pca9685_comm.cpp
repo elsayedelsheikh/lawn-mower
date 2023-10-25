@@ -1,11 +1,11 @@
-#include "pca9685_hardware_interface/pca9685_comm.h"
 #include <unistd.h>
 #include <cmath>
 
-#include "pca9685_hardware_interface/Constants.h"
-#include "pca9685_hardware_interface/I2CPeripheral.h"
+#include "fwsbot/Constants.h"
+#include "fwsbot/pca9685_comm.h"
+#include "fwsbot/I2CPeripheral.h"
 
-namespace PiPCA9685 {
+namespace fwsbot {
 
 PCA9685::PCA9685(const std::string &device, int address) {
   i2c_dev = std::make_unique<I2CPeripheral>(device, address);
@@ -65,4 +65,4 @@ void PCA9685::set_pwm_ms(const int channel, const double ms) {
   set_pwm(channel, 0, bits);
 }
 
-}  // namespace PiPCA9685
+}  // namespace fwsbot

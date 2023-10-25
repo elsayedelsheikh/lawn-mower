@@ -1,10 +1,11 @@
-#ifndef PIPCA9685_I2CPERIPHERAL_H
-#define PIPCA9685_I2CPERIPHERAL_H
+#ifndef FWSBOT__I2CPERIPHERAL_H
+#define FWSBOT__I2CPERIPHERAL_H
 
 #include <cstdint>
 #include <string>
 
-namespace PiPCA9685 {
+namespace fwsbot 
+{
 
 class I2CPeripheral {
 public:
@@ -23,6 +24,6 @@ private:
 
 };
 
-}  // namespace PiPCA9685
+}  // namespace fwsbot
 
-#endif  // PIPCA9685_I2CPERIPHERAL_H
+#endif  // FWSBOT__I2CPERIPHERAL_H

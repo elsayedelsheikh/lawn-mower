@@ -1,10 +1,11 @@
-#ifndef RPY_PWM_HAT_PCA9685_H
-#define RPY_PWM_HAT_PCA9685_H
+#ifndef FWSBOT__PCA9685_H
+#define FWSBOT__PCA9685_H
 
 #include <string>
 #include <memory>
 
-namespace PiPCA9685 {
+namespace fwsbot
+{
 
 class I2CPeripheral;
 
@@ -29,6 +30,6 @@ private:
 
 };
 
-}  // namespace PiPCA9685
+}  // namespace fwsbot
 
-#endif //RPY_PWM_HAT_PCA9685_H
+#endif //FWSBOT__PCA9685_H

@@ -26,16 +26,28 @@ hardware_interface::CallbackReturn Pca9685SystemHardware::on_init(
   // Get Params
   pca_frequency_ = std::stod(info_.hardware_parameters["pca_frequency"]);
   hw_interfaces_[0].servo.name = info_.hardware_parameters["fl_steer_joint_name"];
+  hw_interfaces_[0].servo.channel = std::stoi(info_.hardware_parameters["fl_steer_joint_channel"]);
   hw_interfaces_[0].motor.name = info_.hardware_parameters["fl_drive_joint_name"];
+  hw_interfaces_[0].motor.dir_channel = std::stoi(info_.hardware_parameters["fl_drive_joint_dir_channel"]);
+  hw_interfaces_[0].motor.pwm_channel = std::stoi(info_.hardware_parameters["fl_drive_joint_pwm_channel"]);
 
   hw_interfaces_[1].servo.name = info_.hardware_parameters["fr_steer_joint_name"];
+  hw_interfaces_[1].servo.channel = std::stoi(info_.hardware_parameters["fr_steer_joint_channel"]);
   hw_interfaces_[1].motor.name = info_.hardware_parameters["fr_drive_joint_name"];
+  hw_interfaces_[1].motor.dir_channel = std::stoi(info_.hardware_parameters["fr_drive_joint_dir_channel"]);
+  hw_interfaces_[1].motor.pwm_channel = std::stoi(info_.hardware_parameters["fr_drive_joint_pwm_channel"]);
 
   hw_interfaces_[2].servo.name = info_.hardware_parameters["rl_steer_joint_name"];
+  hw_interfaces_[2].servo.channel = std::stoi(info_.hardware_parameters["rl_steer_joint_channel"]);
   hw_interfaces_[2].motor.name = info_.hardware_parameters["rl_drive_joint_name"];
+  hw_interfaces_[2].motor.dir_channel = std::stoi(info_.hardware_parameters["rl_drive_joint_dir_channel"]);
+  hw_interfaces_[2].motor.pwm_channel = std::stoi(info_.hardware_parameters["rl_drive_joint_pwm_channel"]);
 
   hw_interfaces_[3].servo.name = info_.hardware_parameters["rr_steer_joint_name"];
+  hw_interfaces_[3].servo.channel = std::stoi(info_.hardware_parameters["rr_steer_joint_channel"]);
   hw_interfaces_[3].motor.name = info_.hardware_parameters["rr_drive_joint_name"];
+  hw_interfaces_[3].motor.dir_channel = std::stoi(info_.hardware_parameters["rr_drive_joint_dir_channel"]);
+  hw_interfaces_[3].motor.pwm_channel = std::stoi(info_.hardware_parameters["rr_drive_joint_pwm_channel"]);
 
   // Check URDF
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
@@ -183,7 +195,7 @@ hardware_interface::return_type Pca9685SystemHardware::write(
   for (int i = 0; i < NUM_INTERFACES; i++)
   {
     double duty_cycle = command_to_duty_cycle(hw_interfaces_[i].motor.velocity);
-    pca.set_pwm_ms(i, duty_cycle);
+    pca.set_pwm_ms(hw_interfaces_[i].motor.pwm_channel, duty_cycle);
 
   }
 
@@ -194,4 +206,4 @@ hardware_interface::return_type Pca9685SystemHardware::write(
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-  pca9685_hardware_interface::Pca9685SystemHardware, hardware_interface::SystemInterface)
+  fwsbot::Pca9685SystemHardware, hardware_interface::SystemInterface)

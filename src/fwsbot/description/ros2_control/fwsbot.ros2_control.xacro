@@ -7,14 +7,30 @@
       <hardware>
         <plugin>fwsbot/Pca9685SystemHardware</plugin>
         <param name="fl_drive_joint_name">fl_wheel_joint</param>
+        <param name="fl_drive_joint_dir_channel">9</param>
+        <param name="fl_drive_joint_pwm_channel">8</param>
         <param name="fl_steer_joint_name">fl_steering_joint</param>
+        <param name="fl_steer_joint_channel">10</param>
+
         <param name="fr_drive_joint_name">fr_wheel_joint</param>
+        <param name="fr_drive_joint_dir_channel">13</param>
+        <param name="fr_drive_joint_pwm_channel">12</param>
         <param name="fr_steer_joint_name">fr_steering_joint</param>
+        <param name="fr_steer_joint_channel">14</param>
+
         <param name="rl_drive_joint_name">rl_wheel_joint</param>
+        <param name="rl_drive_joint_dir_channel">1</param>
+        <param name="rl_drive_joint_pwm_channel">0</param>
         <param name="rl_steer_joint_name">rl_steering_joint</param>
+        <param name="rl_steer_joint_channel">2</param>
+
         <param name="rr_drive_joint_name">rr_wheel_joint</param>
+        <param name="rr_drive_joint_dir_channel">5</param>
+        <param name="rr_drive_joint_pwm_channel">4</param>
         <param name="rr_steer_joint_name">rr_steering_joint</param>
-        <param name="pca_frequency">50.0</param>
+        <param name="rr_steer_joint_channel">6</param>
+        
+        <param name="pca_frequency">60.0</param>
       </hardware>
       
       <!-- Drive Actuators -->

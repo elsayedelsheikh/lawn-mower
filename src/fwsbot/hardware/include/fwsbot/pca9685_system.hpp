@@ -25,12 +25,15 @@ struct DiveJoint
 {
   std::string name;
   double velocity;
+  int pwm_channel;
+  int dir_channel;
 };
 
 struct SteerJoint
 {
   std::string name;
   double position;
+  int channel;
 };
 
 struct JointPair
@@ -81,7 +84,7 @@ class Pca9685SystemHardware : public hardware_interface::SystemInterface {
   static constexpr int NUM_INTERFACES = 4;
   JointPair hw_interfaces_[NUM_INTERFACES];
   
-  PiPCA9685::PCA9685 pca;
+  PCA9685 pca;
   double pca_frequency_;
 
   double command_to_duty_cycle(double command);

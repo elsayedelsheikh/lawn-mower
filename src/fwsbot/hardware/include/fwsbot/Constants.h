@@ -1,8 +1,8 @@
-#ifndef RPY_PWM_HAT_CONSTANTS_H
-#define RPY_PWM_HAT_CONSTANTS_H
+#ifndef FWSBOT__CONSTANTS_H
+#define FWSBOT__CONSTANTS_H
 #include <cstdint>
 
-namespace PiPCA9685 {
+namespace fwsbot {
 
 // Registers/etc:
 constexpr uint8_t MODE1              = 0x00;
@@ -27,6 +27,6 @@ constexpr uint8_t ALLCALL            = 0x01;
 constexpr uint8_t INVRT              = 0x10;
 constexpr uint8_t OUTDRV             = 0x04;
 
-}  // namespace PiPCA9685
+}  // namespace fwsbot
 
-#endif //RPY_PWM_HAT_CONSTANTS_H
+#endif //FWSBOT__CONSTANTS_H
