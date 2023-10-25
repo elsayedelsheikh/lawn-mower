@@ -8,6 +8,8 @@ WORKDIR $ROS_UNDERLAY/src
 # Use Cyclone DDS as middleware
 # Install foxglove-bridge for remote visualization
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        i2c-tools \
+        libi2c-dev \
         ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
         ros-${ROS_DISTRO}-foxglove-bridge
 

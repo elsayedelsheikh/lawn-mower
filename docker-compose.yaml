@@ -1,21 +1,21 @@
 version: "3"
 services:
   base:
-    image: rrbotcam-control:base
+    image: lawnmower-control:base
     build:
       context: .
       dockerfile: Dockerfile
       args:
         ROS_DISTRO: humble
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
-    command: ros2 launch rrbot_cam rrbot.launch.py
+      - "/dev/i2c-1:/dev/i2c-1"
+    command: ros2 launch fwsbot fwsbot.launch.py
     # Networking
     network_mode: "host"
     ipc: host
 
   foxglove-websocket:
-    image:  rrbotcam-control:base
+    image:  lawnmower-control:base
     command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml
     # Networking
     network_mode: "host"
