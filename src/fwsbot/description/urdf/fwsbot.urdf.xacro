@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lawn_mower_robot">
+  
+  <!-- Simulation or Physical Robot -->
+  <xacro:arg name="sim_gazebo_classic" default="false"/>
+
   <!-- Import fws core -->
   <xacro:include filename="$(find fwsbot)/urdf/fwsbot.core.xacro" />
 
   <!-- Import fwsbot ros2_control -->
   <xacro:include filename="$(find fwsbot)/ros2_control/fwsbot.ros2_control.xacro" />
-
-  <xacro:fwsbot_ros2_control
-    name="pca9685_control" 
-    min_steer=${radians(0)} 
-    max_steer=${radians(90)}/>
 
 </robot>

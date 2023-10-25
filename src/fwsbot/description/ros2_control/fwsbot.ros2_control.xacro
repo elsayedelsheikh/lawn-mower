@@ -1,95 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="fwsbot_ros2_control" params="name min_steer max_steer">
+  <!-- Physical Robot -->
+  <xacro:unless value="$(arg sim_gazebo_classic)">
+      <ros2_control name="pca9685_control" type="system">
+        <hardware>
+          <plugin>fwsbot/Pca9685SystemHardware</plugin>
+          <param name="fl_drive_joint_name">fl_wheel_joint</param>
+          <param name="fl_drive_joint_dir_channel">9</param>
+          <param name="fl_drive_joint_pwm_channel">8</param>
+          <param name="fl_steer_joint_name">fl_steering_joint</param>
+          <param name="fl_steer_joint_channel">10</param>
 
-    <ros2_control name="${name}" type="system">
-      <hardware>
-        <plugin>fwsbot/Pca9685SystemHardware</plugin>
-        <param name="fl_drive_joint_name">fl_wheel_joint</param>
-        <param name="fl_drive_joint_dir_channel">9</param>
-        <param name="fl_drive_joint_pwm_channel">8</param>
-        <param name="fl_steer_joint_name">fl_steering_joint</param>
-        <param name="fl_steer_joint_channel">10</param>
+          <param name="fr_drive_joint_name">fr_wheel_joint</param>
+          <param name="fr_drive_joint_dir_channel">13</param>
+          <param name="fr_drive_joint_pwm_channel">12</param>
+          <param name="fr_steer_joint_name">fr_steering_joint</param>
+          <param name="fr_steer_joint_channel">14</param>
 
-        <param name="fr_drive_joint_name">fr_wheel_joint</param>
-        <param name="fr_drive_joint_dir_channel">13</param>
-        <param name="fr_drive_joint_pwm_channel">12</param>
-        <param name="fr_steer_joint_name">fr_steering_joint</param>
-        <param name="fr_steer_joint_channel">14</param>
+          <param name="rl_drive_joint_name">rl_wheel_joint</param>
+          <param name="rl_drive_joint_dir_channel">1</param>
+          <param name="rl_drive_joint_pwm_channel">0</param>
+          <param name="rl_steer_joint_name">rl_steering_joint</param>
+          <param name="rl_steer_joint_channel">2</param>
 
-        <param name="rl_drive_joint_name">rl_wheel_joint</param>
-        <param name="rl_drive_joint_dir_channel">1</param>
-        <param name="rl_drive_joint_pwm_channel">0</param>
-        <param name="rl_steer_joint_name">rl_steering_joint</param>
-        <param name="rl_steer_joint_channel">2</param>
-
-        <param name="rr_drive_joint_name">rr_wheel_joint</param>
-        <param name="rr_drive_joint_dir_channel">5</param>
-        <param name="rr_drive_joint_pwm_channel">4</param>
-        <param name="rr_steer_joint_name">rr_steering_joint</param>
-        <param name="rr_steer_joint_channel">6</param>
+          <param name="rr_drive_joint_name">rr_wheel_joint</param>
+          <param name="rr_drive_joint_dir_channel">5</param>
+          <param name="rr_drive_joint_pwm_channel">4</param>
+          <param name="rr_steer_joint_name">rr_steering_joint</param>
+          <param name="rr_steer_joint_channel">6</param>
+          
+          <param name="pca_frequency">60.0</param>
+        </hardware>
         
-        <param name="pca_frequency">60.0</param>
+        <!-- Drive Actuators -->
+        <joint name="fl_wheel_joint">
+          <command_interface name="velocity"/>
+          <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="fr_wheel_joint">
+          <command_interface name="velocity"/>
+          <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="rl_wheel_joint">
+          <command_interface name="velocity"/>
+          <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="rr_wheel_joint">
+          <command_interface name="velocity"/>
+          <state_interface name="velocity"/>
+        </joint>
+
+        <!-- Steering Actuators -->
+        <joint name="fl_steering_joint">
+          <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">1.0</param>
+          </command_interface>
+          <state_interface name="position"/>
+        </joint>
+
+        <joint name="fr_steering_joint">
+          <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">1.0</param>
+          </command_interface>
+          <state_interface name="position"/>
+        </joint>
+
+        <joint name="rl_steering_joint">
+          <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">1.0</param>
+          </command_interface>
+          <state_interface name="position"/>
+        </joint>
+
+        <joint name="rr_steering_joint">
+          <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">1.0</param>
+          </command_interface>
+          <state_interface name="position"/>
+        </joint>
+      </ros2_control>
+  </xacro:unless>
+
+  <!-- Gazebo Classic Simulation -->
+  <xacro:if value="$(arg sim_gazebo_classic)">
+    <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
       </hardware>
       
       <!-- Drive Actuators -->
       <joint name="fl_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
         <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="fr_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
         <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="rl_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
         <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="rr_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
         <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <!-- Steering Actuators -->
       <joint name="fl_steering_joint">
         <command_interface name="position">
-          <param name="min">${min_steer}</param>
-          <param name="max">${max_steer}</param>
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
         </command_interface>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="fr_steering_joint">
         <command_interface name="position">
-          <param name="min">${min_steer}</param>
-          <param name="max">${max_steer}</param>
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
         </command_interface>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="rl_steering_joint">
         <command_interface name="position">
-          <param name="min">${min_steer}</param>
-          <param name="max">${max_steer}</param>
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
         </command_interface>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
 
       <joint name="rr_steering_joint">
         <command_interface name="position">
-          <param name="min">${min_steer}</param>
-          <param name="max">${max_steer}</param>
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
         </command_interface>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
       </joint>
     </ros2_control>
+  </xacro:if>
 
-  </xacro:macro>
-
+  <gazebo>
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+      <parameters>$(find fwsbot)/config/fwsbot_gazebo_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
 
 </robot>
 
