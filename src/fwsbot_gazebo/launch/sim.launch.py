@@ -114,8 +114,6 @@ def generate_launch_description():
             " ",
             "sim_gazebo_classic:=true",
             " ",
-            "sim_gazebo:=false",
-            " ",
             "simulation_controllers:=",
             robot_controllers,
             " ",
@@ -216,7 +214,7 @@ def generate_launch_description():
             gazebo,
             gazebo_spawn_robot,
             robot_state_pub_node,
-            delay_rviz_after_joint_state_broadcaster_spawner,
+            # delay_rviz_after_joint_state_broadcaster_spawner,
             delay_joint_state_broadcaster_spawner_after_gazebo_spawn_robot,
         ]
         + delay_robot_controller_spawners_after_joint_state_broadcaster_spawner

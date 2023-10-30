@@ -1,0 +1,8 @@
+# Mode Selector for 4WS mobile robot operation
+# Mode 0 - In phase steering
+# Mode 1 - Oppositie phase steering
+# Mode 2 - Pivot steering
+int32 mode 
+---
+bool success # indicates if the mode change was successful
+string message # informational, e.g. for error messages
