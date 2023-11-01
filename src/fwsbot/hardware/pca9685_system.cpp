@@ -189,7 +189,7 @@ void Pca9685SystemHardware::set_motor_vel(int pwm_channel, int dir_channel, doub
   }
   double min_velocity = 0.0;
   double max_velocity = 1.0;
-  double clamped_velocity = std::clamp(velocity, min_velocity, max_velocity);
+  double clamped_velocity = std::clamp(std::abs(velocity), min_velocity, max_velocity);
   double min_duty_cycle = 0.0;
   double max_duty_cycle = 4095.0;
   double slope = (max_duty_cycle-min_duty_cycle)/(max_velocity-min_velocity);
