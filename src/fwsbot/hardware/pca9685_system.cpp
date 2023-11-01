@@ -199,8 +199,9 @@ void Pca9685SystemHardware::set_motor_vel(int pwm_channel, int dir_channel, doub
 }
 
 void Pca9685SystemHardware::set_servo_pos(int channel, double angle){
+  // Angle is in radians
   double min_angle = 0.0;
-  double max_angle = 180.0;
+  double max_angle = M_PI;
   double clamped_angle = std::clamp(angle, min_angle, max_angle);
   // Convert the angle to a corresponding pulse width between 1 ms and 2 ms
   double min_pulse_width = 1.0;
