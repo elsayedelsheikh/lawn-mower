@@ -87,7 +87,8 @@ class Pca9685SystemHardware : public hardware_interface::SystemInterface {
   PCA9685 pca;
   double pca_frequency_;
 
-  double command_to_duty_cycle(double command);
+  void set_motor_vel(int pwm_channel, int dir_channel, double velocity);
+  void set_servo_pos(int channel, double angle);
 };
 
 }  // namespace fwsbot

@@ -170,21 +170,42 @@ hardware_interface::return_type Pca9685SystemHardware::read(
   return hardware_interface::return_type::OK;
 }
 
-double Pca9685SystemHardware::command_to_duty_cycle(double command){
+// double Pca9685SystemHardware::command_to_duty_cycle(double command){
+//     double min_input = -1.0;
+//     double max_input = 1.0;
+//     double clamped_command = std::clamp(command, min_input, max_input);
+//     double min_duty_cycle = 0.0;
+//     double max_duty_cycle = 5.0;
+//     double slope = (max_duty_cycle-min_duty_cycle)/(max_input-min_input);
+//     double offset = (max_duty_cycle+min_duty_cycle)/2;
+//     return slope * clamped_command + offset;
+// }
 
-    double min_input = -1.0;
-    double max_input = 1.0;
+void Pca9685SystemHardware::set_motor_vel(int pwm_channel, int dir_channel, double velocity){
+  if (velocity < 0.0){
+    pca.set_pwm(dir_channel, 0, 0xFFFF);
+  } else {
+    pca.set_pwm(dir_channel, 0, 0);
+  }
+  double min_velocity = 0.0;
+  double max_velocity = 1.0;
+  double clamped_velocity = std::clamp(velocity, min_velocity, max_velocity);
+  double min_duty_cycle = 0.0;
+  double max_duty_cycle = 4095.0;
+  double slope = (max_duty_cycle-min_duty_cycle)/(max_velocity-min_velocity);
+  double offset = (max_duty_cycle+min_duty_cycle)/2;
+  uint16_t duty_cycle = slope * clamped_velocity + offset;
+  pca.set_pwm(pwm_channel, 0, duty_cycle);
+}
 
-    double clamped_command = std::clamp(command, min_input, max_input);
-
-    double min_duty_cycle = 0.0;
-    double max_duty_cycle = 5.0;
-
-
-    double slope = (max_duty_cycle-min_duty_cycle)/(max_input-min_input);
-    double offset = (max_duty_cycle+min_duty_cycle)/2;
-
-    return slope * clamped_command + offset;
+void Pca9685SystemHardware::set_servo_pos(int channel, double angle){
+  double min_angle = 0.0;
+  double max_angle = 180.0;
+  double clamped_angle = std::clamp(angle, min_angle, max_angle);
+  // Convert the angle to a corresponding pulse width between 1 ms and 2 ms
+  double min_pulse_width = 1.0;
+  double pulse_ms = min_pulse_width + (clamped_angle / max_angle); 
+  pca.set_pwm_ms(channel, pulse_width);
 
 }
 
@@ -194,11 +215,8 @@ hardware_interface::return_type Pca9685SystemHardware::write(
 
   for (int i = 0; i < NUM_INTERFACES; i++)
   {
-    double duty_cycle = command_to_duty_cycle(hw_interfaces_[i].motor.velocity);
-    pca.set_pwm_ms(hw_interfaces_[i].motor.pwm_channel, duty_cycle);
-
-    double duty_cycle = command_to_duty_cycle(hw_interfaces_[i].servo.position);
-    pca.set_pwm(hw_interfaces_[i].servo.channel, 0, duty_cycle);
+    set_motor_vel(hw_interfaces_[i].motor.pwm_channel, hw_interfaces_[i].motor.dir_channel, hw_interfaces_[i].motor.velocity);
+    set_servo_pos(hw_interfaces_[i].servo.channel, hw_interfaces_[i].servo.position);
   }
 
   return hardware_interface::return_type::OK;
