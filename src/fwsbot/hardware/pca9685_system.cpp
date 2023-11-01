@@ -206,7 +206,7 @@ void Pca9685SystemHardware::set_servo_pos(int channel, double angle){
   // Convert the angle to a corresponding pulse width between 1 ms and 2 ms
   double min_pulse_width = 1.0;
   double pulse_ms = min_pulse_width + (clamped_angle / max_angle); 
-  pca.set_pwm_ms(channel, pulse_width);
+  pca.set_pwm_ms(channel, pulse_ms);
 
 }
 
