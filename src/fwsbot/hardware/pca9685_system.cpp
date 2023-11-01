@@ -50,46 +50,46 @@ hardware_interface::CallbackReturn Pca9685SystemHardware::on_init(
   hw_interfaces_[3].motor.pwm_channel = std::stoi(info_.hardware_parameters["rr_drive_joint_pwm_channel"]);
 
   // Check URDF
-  for (const hardware_interface::ComponentInfo & joint : info_.joints)
-  {
-    // Check Command Interfaces
-    // Pca9685System has one command interface on each joint
-    if (joint.command_interfaces.size() != 1)
-    {
-      RCLCPP_FATAL(
-        rclcpp::get_logger("Pca9685SystemHardware"),
-        "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
-        joint.command_interfaces.size());
-      return hardware_interface::CallbackReturn::ERROR;
-    }
+  // for (const hardware_interface::ComponentInfo & joint : info_.joints)
+  // {
+  //   // Check Command Interfaces
+  //   // Pca9685System has one command interface on each joint
+  //   if (joint.command_interfaces.size() != 1)
+  //   {
+  //     RCLCPP_FATAL(
+  //       rclcpp::get_logger("Pca9685SystemHardware"),
+  //       "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
+  //       joint.command_interfaces.size());
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
 
-    if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY || 
-        joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
-    {
-      RCLCPP_FATAL(
-        rclcpp::get_logger("Pca9685SystemHardware"),
-        "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.", joint.name.c_str(),
-        joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_POSITION);
-      return hardware_interface::CallbackReturn::ERROR;
-    }
+  //   if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY || 
+  //       joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+  //   {
+  //     RCLCPP_FATAL(
+  //       rclcpp::get_logger("Pca9685SystemHardware"),
+  //       "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.", joint.name.c_str(),
+  //       joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_POSITION);
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
 
-    // Check State Interfaces
-    if (joint.state_interfaces.size() != 1) {
-      RCLCPP_FATAL(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
-                   "Joint '%s' has %zu state interface. 1 expected.",
-                   joint.name.c_str(), joint.state_interfaces.size());
-      return hardware_interface::CallbackReturn::ERROR;
-    }
+  //   // Check State Interfaces
+  //   if (joint.state_interfaces.size() != 1) {
+  //     RCLCPP_FATAL(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+  //                  "Joint '%s' has %zu state interface. 1 expected.",
+  //                  joint.name.c_str(), joint.state_interfaces.size());
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
 
-    if (joint.state_interfaces[0].name != hardware_interface::HW_IF_VELOCITY ||
-        joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION) {
-      RCLCPP_FATAL(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
-                   "Joint '%s' have %s state interface. '%s' or '%s' expected.",
-                   joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
-                   hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_POSITION);
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-  }
+  //   if (joint.state_interfaces[0].name != hardware_interface::HW_IF_VELOCITY ||
+  //       joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION) {
+  //     RCLCPP_FATAL(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+  //                  "Joint '%s' have %s state interface. '%s' or '%s' expected.",
+  //                  joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
+  //                  hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_POSITION);
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
+  // }
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -177,8 +177,8 @@ double Pca9685SystemHardware::command_to_duty_cycle(double command){
 
     double clamped_command = std::clamp(command, min_input, max_input);
 
-    double min_duty_cycle = 0.5;
-    double max_duty_cycle = 2.5;
+    double min_duty_cycle = 0.0;
+    double max_duty_cycle = 5.0;
 
 
     double slope = (max_duty_cycle-min_duty_cycle)/(max_input-min_input);
@@ -197,6 +197,8 @@ hardware_interface::return_type Pca9685SystemHardware::write(
     double duty_cycle = command_to_duty_cycle(hw_interfaces_[i].motor.velocity);
     pca.set_pwm_ms(hw_interfaces_[i].motor.pwm_channel, duty_cycle);
 
+    double duty_cycle = command_to_duty_cycle(hw_interfaces_[i].servo.position);
+    pca.set_pwm(hw_interfaces_[i].servo.channel, 0, duty_cycle);
   }
 
   return hardware_interface::return_type::OK;

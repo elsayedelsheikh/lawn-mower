@@ -10,6 +10,8 @@ WORKDIR $ROS_UNDERLAY/src
 RUN apt-get update && apt-get install -y --no-install-recommends \
         i2c-tools \
         libi2c-dev \
+        neovim \
+        tmux \
         ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
         ros-${ROS_DISTRO}-foxglove-bridge
 
