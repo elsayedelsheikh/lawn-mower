@@ -20,17 +20,17 @@ i2c_bus = busio.I2C(SCL, SDA)
 # Create a simple PCA9685 class instance.
 pca = PCA9685(i2c_bus)
 
-# Set the PWM frequency to 100hz.
-pca.frequency = 100
+# Set the PWM frequency to 50hz.
+pca.frequency = 50
 
 input("Press enter when ready to measure default frequency.")
 
 # Set the PWM duty cycle for channel zero to 50%. duty_cycle is 16 bits to match other PWM objects
 # but the PCA9685 will only actually give 12 bits of resolution.
 print("Running with default calibration")
-pca.channels[2].duty_cycle = 0x7FFF
+pca.channels[6].duty_cycle = 0x7FFF
 time.sleep(1)
-pca.channels[2].duty_cycle = 0
+pca.channels[6].duty_cycle = 0
 
 measured_frequency = float(input("Frequency measured: "))
 print()
@@ -39,15 +39,15 @@ pca.reference_clock_speed = pca.reference_clock_speed * (
     measured_frequency / pca.frequency
 )
 # Set frequency again so we can get closer. Reading it back will produce the real value.
-pca.frequency = 100
+pca.frequency = 50
 
 input("Press enter when ready to measure coarse calibration frequency.")
-pca.channels[2].duty_cycle = 0x7FFF
+pca.channels[6].duty_cycle = 0x7FFF
 time.sleep(1)
-pca.channels[2].duty_cycle = 0
+pca.channels[6].duty_cycle = 0
 measured_after_calibration = float(input("Frequency measured: "))
 print()
 
 reference_clock_speed = measured_after_calibration * 4096 * pca.prescale_reg
-
+# Read: 26087629
 print("Real reference clock speed: {0:.0f}".format(reference_clock_speed))
