@@ -25,7 +25,8 @@ PCA9685::~PCA9685() = default;
 void PCA9685::set_pwm_freq(const double freq_hz) {
   frequency = freq_hz;
 
-  auto prescaleval = 2.5e7; //    # 25MHz
+  auto prescaleval = 26087629; //    # Calibrated Value
+  // auto prescaleval = 2.5e7; //    # 25MHz
   prescaleval /= 4096.0; //       # 12-bit
   prescaleval /= freq_hz;
   prescaleval -= 1.0;

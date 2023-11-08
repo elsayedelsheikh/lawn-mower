@@ -200,14 +200,22 @@ void Pca9685SystemHardware::set_motor_vel(int pwm_channel, int dir_channel, doub
 
 void Pca9685SystemHardware::set_servo_pos(int channel, double angle){
   // Angle is in radians
+  // double min_angle = 0.0;
+  // double max_angle = M_PI;
+  // double clamped_angle = std::clamp(angle, min_angle, max_angle);
+  // // Convert the angle to a corresponding pulse width between 1 ms and 2 ms
+  // double min_pulse_width = 1.0;
+  // double pulse_ms = min_pulse_width + (clamped_angle / max_angle); 
+  // pca.set_pwm_ms(channel, pulse_ms);
   double min_angle = 0.0;
   double max_angle = M_PI;
+  double min_duty_cycle = 0.0;
+  double max_duty_cycle = 4095.0;
   double clamped_angle = std::clamp(angle, min_angle, max_angle);
-  // Convert the angle to a corresponding pulse width between 1 ms and 2 ms
-  double min_pulse_width = 1.0;
-  double pulse_ms = min_pulse_width + (clamped_angle / max_angle); 
-  pca.set_pwm_ms(channel, pulse_ms);
-
+  double slope = (max_duty_cycle-min_duty_cycle)/(max_angle-min_angle);
+  double offset = (max_duty_cycle+min_duty_cycle)/2;
+  uint16_t duty_cycle = slope * clamped_angle + offset;
+  pca.set_pwm(channel, 0, duty_cycle);
 }
 
 hardware_interface::return_type Pca9685SystemHardware::write(
