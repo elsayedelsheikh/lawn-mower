@@ -23,7 +23,7 @@ class RobotControllerNode(Node):
 
         ## Variables
         self.cmd_vel = None     # robot velocity to be commanded
-        self.operation_mode = 0 # Default: Auto mode
+        self.operation_mode = 1 # Default: 0 Auto, 1: In Phase, 2: Opposite Phase, 3: Pivot Turn
 
         ## ROS Communication
         self.pub_steer_pos = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands', 10)
@@ -89,7 +89,12 @@ class RobotControllerNode(Node):
         pos[1] = math.atan(ang)
         pos[2] = pos[0]
         pos[3] = pos[1]
-        
+
+        ## Position: 0 ~ pi
+        pos += math.pi/2
+        pos %= math.pi
+
+        ## Velocity: 0 ~ 1
         vel[:] = sign*V
         return pos,vel
     
