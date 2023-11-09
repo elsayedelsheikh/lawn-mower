@@ -120,11 +120,11 @@ std::vector<hardware_interface::StateInterface> Pca9685SystemHardware::export_st
   std::vector<hardware_interface::StateInterface> state_interfaces;
   
   for (int i = 0; i < NUM_INTERFACES; i++) {
-  state_interfaces.emplace_back(hardware_interface::StateInterface(
-    hw_interfaces_[i].motor.name, hardware_interface::HW_IF_VELOCITY, &hw_interfaces_[i].motor.velocity));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+      hw_interfaces_[i].motor.name, hardware_interface::HW_IF_VELOCITY, &hw_interfaces_[i].motor.velocity));
 
-  state_interfaces.emplace_back(hardware_interface::StateInterface(
-    hw_interfaces_[i].servo.name, hardware_interface::HW_IF_POSITION, &hw_interfaces_[i].servo.position));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+      hw_interfaces_[i].servo.name, hardware_interface::HW_IF_POSITION, &hw_interfaces_[i].servo.position));
   }
 
   return state_interfaces;
@@ -172,25 +172,27 @@ hardware_interface::return_type Pca9685SystemHardware::read(
 }
 
 void Pca9685SystemHardware::set_motor_vel(int pwm_channel, int dir_channel, double velocity){
-  const uint16_t min_duty_cycle = 0x0000;
-  const uint16_t max_duty_cycle = 0xFFFF;
+  double min_input = 0.0;
+  double max_input = 1.0;
+  double min_duty_cycle = 0.0;
+  double max_duty_cycle = 19.0;
 
-  if (velocity < 0.0) {
-      pca.set_pwm(dir_channel, 0, min_duty_cycle);
+  if (velocity < 0.0){
+    pca.set_pwm_ms(dir_channel, min_duty_cycle);
   } else {
-      pca.set_pwm(dir_channel, 0, max_duty_cycle);
+    pca.set_pwm_ms(dir_channel, max_duty_cycle);
   }
 
-  double abs_velocity = std::abs(velocity);
-  double min_velocity = 0.0;
-  double max_velocity = 1.0;
-  double clamped_velocity = std::clamp(abs_velocity, min_velocity, max_velocity);
+  velocity = std::abs(velocity);
+  double input_range = max_input - min_input;
+  double duty_cycle_range = max_duty_cycle - min_duty_cycle;
+  double duty_cycle_change_per_input = duty_cycle_range / input_range;
 
-  double slope = static_cast<double>(max_duty_cycle - min_duty_cycle) / (max_velocity - min_velocity);
-  double offset = (max_duty_cycle + min_duty_cycle) / 2.0;
-  uint16_t duty_cycle = static_cast<uint16_t>(slope * clamped_velocity + offset);
+  double clamped_vel = std::clamp(velocity, min_input, max_input);
+  double duty_cycle = min_duty_cycle + (clamped_vel - min_input) * duty_cycle_change_per_input;
 
-  pca.set_pwm(pwm_channel, 0, duty_cycle);
+  RCLCPP_INFO(rclcpp::get_logger("Pca9685SystemHardware"), "Setting duty cycle to %f", duty_cycle);
+  pca.set_pwm_ms(pwm_channel, duty_cycle);
 }
 
 void Pca9685SystemHardware::set_servo_pos(int channel, double angle){
