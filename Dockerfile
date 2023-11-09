@@ -21,6 +21,8 @@ ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ADD https://raw.githubusercontent.com/ros-controls/ros2_control/$BRANCH/ros2_control.$ROS_DISTRO.repos ros2_control.repos
 RUN vcs import < ros2_control.repos
 COPY src/fwsbot ./fwsbot
+COPY src/fws_base_controller ./fws_base_controller
+COPY src/fws_msgs ./fws_msgs
 
 ## install dependencies
 RUN apt-get update \
