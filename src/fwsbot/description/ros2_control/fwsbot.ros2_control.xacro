@@ -30,7 +30,7 @@
           <param name="rr_steer_joint_name">rr_steering_joint</param>
           <param name="rr_steer_joint_channel">6</param>
           
-          <param name="pca_frequency">60.0</param>
+          <param name="pca_frequency">50.0</param>
         </hardware>
         
         <!-- Drive Actuators -->
