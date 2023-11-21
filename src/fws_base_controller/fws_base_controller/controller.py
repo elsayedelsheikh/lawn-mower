@@ -92,10 +92,11 @@ class RobotControllerNode(Node):
 
         ## Position: 0 ~ pi
         pos += math.pi/2
-        pos %= math.pi
 
         ## Velocity: 0 ~ 1
         vel[:] = sign*V
+        vel[1] *= -1
+        vel[3] *= -1        
         return pos,vel
     
     def opposite_phase(self): 
@@ -115,6 +116,8 @@ class RobotControllerNode(Node):
         pos[1] = math.atan(self.cmd_vel.angular.z*self.wheel_base/(2*self.cmd_vel.linear.x - self.cmd_vel.angular.z*self.steering_track))
         pos[2] = -pos[0]
         pos[3] = -pos[1]
+
+        ## Position: 0 ~ pi
 
         return pos,vel
 
