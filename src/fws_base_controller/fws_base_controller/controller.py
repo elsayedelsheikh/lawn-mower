@@ -14,16 +14,16 @@ class RobotControllerNode(Node):
         super().__init__('robot_controller')
 
         ## Parameters
-        timer_period = 0.02 ## 20ms = 50Hz
-        self.wheel_seperation = 0.122
-        self.wheel_base = 0.156
-        self.wheel_radius = 0.026
-        self.wheel_steering_y_offset = 0.03
+        timer_period = 0.02 ## 50Hz
+        self.wheel_seperation = 0.63
+        self.wheel_base = 0.64
+        self.wheel_radius = 0.13
+        self.wheel_steering_y_offset = 0.03 ## Not used
         self.steering_track = self.wheel_seperation - 2*self.wheel_steering_y_offset
 
         ## Variables
         self.cmd_vel = None     # robot velocity to be commanded
-        self.operation_mode = 1 # Default: 0 Auto, 1: In Phase, 2: Opposite Phase, 3: Pivot Turn
+        self.operation_mode = 0 # Default: 0 Auto, 1: In Phase, 2: Opposite Phase, 3: Pivot Turn
 
         ## ROS Communication
         self.pub_steer_pos = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands', 10)
@@ -118,6 +118,11 @@ class RobotControllerNode(Node):
         pos[3] = -pos[1]
 
         ## Position: 0 ~ pi
+        pos += math.pi/2
+
+        ## Velocity: 0 ~ 1
+        vel[1] *= -1
+        vel[3] *= -1        
 
         return pos,vel
 
@@ -136,6 +141,12 @@ class RobotControllerNode(Node):
         vel[2] = vel[0]
         vel[3] = vel[1]
 
+        ## Position: 0 ~ pi
+        pos += math.pi/2
+
+        ## Velocity: 0 ~ 1
+        vel[1] *= -1
+        vel[3] *= -1        
         return pos,vel
 
     def control_cycle(self):

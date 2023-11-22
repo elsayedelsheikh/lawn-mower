@@ -47,6 +47,12 @@ def generate_launch_description():
             "fwsbot_controllers.yaml",
         ]
     )
+    
+    fws_controller = Node(
+        package="fws_base_controller",
+        executable="controller",
+        output="screen",
+    )
 
     control_node = Node(
         package="controller_manager",
@@ -88,6 +94,7 @@ def generate_launch_description():
     )
 
     nodes = [
+        fws_controller,
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner,

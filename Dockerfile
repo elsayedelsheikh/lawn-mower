@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         neovim \
         tmux \
         ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
-        ros-${ROS_DISTRO}-foxglove-bridge
+        ros-${ROS_DISTRO}-foxglove-bridge \
+        ros-${ROS_DISTRO}-teleop-twist-keyboard 
 
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
